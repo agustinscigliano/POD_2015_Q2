@@ -1,8 +1,14 @@
 package ar.edu.itba.POD_2015_Q2;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
+
+import ar.edu.itba.model.MapperForYearQuerie;
+import ar.edu.itba.model.Movie;
+import ar.edu.itba.model.MovieLoader;
+import ar.edu.itba.model.ReducerForYearQuerie;
+import ar.edu.itba.model.YearQuerie;
+
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
@@ -12,12 +18,6 @@ import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
 import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
-
-import ar.edu.itba.model.*;
-//import model.FormulaTupla;
-//import core.Mapper_5;
-//import core.Reducer_5;
-//import service.VotacionReader;
 
 
 
@@ -29,7 +29,8 @@ public class My_Client
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException 
 	{
-		String name= System.getProperty("name");
+		String name="51277-51141";
+		//String name= System.getProperty("name");
 		String pass= System.getProperty("pass");
 		if (pass == null)
 		{
@@ -42,7 +43,8 @@ public class My_Client
 		
 		// no hay descubrimiento automatico, 
 		// pero si no decimos nada intentar· usar LOCALHOST
-		String addresses= System.getProperty("addresses");
+		String addresses= "127.0.0.1";
+		//String addresses= System.getProperty("addresses");
 		if (addresses != null)
 		{	
 			String[] arrayAddresses= addresses.split("[,;]");
@@ -62,7 +64,7 @@ public class My_Client
 		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
 		try 
 		{
-			MovieLoader.loadMovies("res/imdb_2000.json",myMap);
+			MovieLoader.loadMovies("res/imdb-200.json",myMap);
 		} 
 		catch (Exception e) 
 		{
@@ -77,20 +79,15 @@ public class My_Client
 	    KeyValueSource<String, Movie> source = KeyValueSource.fromMap(myMap);
 	    Job<String, Movie> job = tracker.newJob(source);
 	
-//	    // Orquestacion de Jobs y lanzamiento
-//	    ICompletableFuture<Map<String, FormulaTupla>> future = job 
-//	            .mapper(new Mapper_5()) 
-//	            .reducer(new Reducer_5())
-//	            .submit(); 
+	    // Orquestacion de Jobs y lanzamiento
+	    ICompletableFuture<Map<Integer, YearQuerie>> future = job 
+	            .mapper(new MapperForYearQuerie()) 
+	            .reducer(new ReducerForYearQuerie())
+	            .submit(); 
 	    
 	    // Tomar resultado e Imprimirlo
-//	    Map<String, FormulaTupla> rta = future.get();
-//	
-//	    for (Entry<String, FormulaTupla> e : rta.entrySet()) 
-//	    {
-//	    	System.out.println(String.format("Distrito %s => Ganador %s",
-//	    			e.getKey(), e.getValue() ));
-//		}
+	    Map<Integer, YearQuerie> rta = future.get();
+	
 	    
 	    
 	    System.exit(0);

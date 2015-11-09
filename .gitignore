@@ -10,6 +10,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.DS_Store
 
 # Eclipse Core
 .project
@@ -40,3 +41,4 @@ local.properties
 
 # STS (Spring Tool Suite)
 .springBeans
+/target/

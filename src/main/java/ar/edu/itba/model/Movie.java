@@ -12,7 +12,7 @@ import com.google.gson.GsonBuilder;
 
 public class Movie {
 	private final String Title = null;
-	private final String Year = null;
+	private final Integer Year = null;
 	private final String rated = null;
 	private final String released = null;
 	private final String Runtime = null;
@@ -23,7 +23,7 @@ public class Movie {
 	private final String Plots = null;
 	private final String Language = null;
 	private final String Poster = null;
-	private final String Metascore = null;
+	private final Long Metascore = null;
 	private final String imdbRating = null;
 	private final String imdbVotes = null;
 	private final String imdbID = null;
@@ -48,7 +48,7 @@ public class Movie {
 		return Title;
 	}
 
-	public String getYear() {
+	public Integer getYear() {
 		return Year;
 	}
 
@@ -92,7 +92,7 @@ public class Movie {
 		return Poster;
 	}
 
-	public String getMetascore() {
+	public Long getMetascore() {
 		return Metascore;
 	}
 
