@@ -9,10 +9,18 @@ import com.google.gson.GsonBuilder;
  *"Kevin Smith, Woody Allen" el director a tomar "Kevin Smith, Woody Allen" que 
  *obviamente es diferente del director  "Kevin Smith" y del director  "Woody Allen"
  */
-
+/**
+ * Nuevas Aclaraciones:
+"N/A" son directores  y actores válidos (no se descartan)
+"N/A "en campos numéricos se deben reemplazar por 0 (no se descartan)
+En la primera query (N actors) se devuelve exactamente N no más o no menos.
+ Si dos o más actores empatan en la cantidad de votos se resuelve el orden 
+ de los mismos por el nombre del actor alfabeticamente.
+ *
+ */
 public class Movie {
 	private final String Title = null;
-	private final Integer Year = null;
+	private final String Year = null;
 	private final String rated = null;
 	private final String released = null;
 	private final String Runtime = null;
@@ -23,7 +31,7 @@ public class Movie {
 	private final String Plots = null;
 	private final String Language = null;
 	private final String Poster = null;
-	private final Long Metascore = null;
+	private final String Metascore = null;
 	private final String imdbRating = null;
 	private final String imdbVotes = null;
 	private final String imdbID = null;
@@ -49,7 +57,11 @@ public class Movie {
 	}
 
 	public Integer getYear() {
-		return Year;
+		try{
+			return Integer.valueOf(Year);
+		}catch(Exception e){
+			return 0;
+		}
 	}
 
 	public String getRated() {
@@ -92,8 +104,12 @@ public class Movie {
 		return Poster;
 	}
 
-	public Long getMetascore() {
-		return Metascore;
+	public Integer getMetascore() {
+		try{
+			return Integer.valueOf(Metascore);
+		}catch(Exception e){
+			return 0;
+		}
 	}
 
 	public String getImdbRating() {
