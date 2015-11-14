@@ -37,6 +37,7 @@ public class My_Client
 		try {
 			client();
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("Unexpected error while running client");
 		}    
 

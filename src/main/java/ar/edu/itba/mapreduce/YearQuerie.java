@@ -9,13 +9,13 @@ import com.hazelcast.nio.serialization.DataSerializable;
 
 public class YearQuerie implements DataSerializable, Comparable<YearQuerie>
 {
-	private long metaScore ;
+	private int metaScore ;
 	private String movie;
 
 	public YearQuerie() {
 	}
 
-	public YearQuerie(long metaScore, String movie) {
+	public YearQuerie(int metaScore, String movie) {
 		this.metaScore = metaScore;
 		this.movie = movie;
 	}
@@ -39,7 +39,7 @@ public class YearQuerie implements DataSerializable, Comparable<YearQuerie>
 	public void writeData(ObjectDataOutput out)
 			throws IOException {
 
-		out.writeLong(metaScore);
+		out.writeInt(metaScore);
 		out.writeUTF(movie);
 	}
 
@@ -52,7 +52,7 @@ public class YearQuerie implements DataSerializable, Comparable<YearQuerie>
 
 	public String toString() {
 
-		return String.format("Movie: %s with MetaScore %l", movie, metaScore);
+		return String.format("Movie: %s with MetaScore %d", movie, metaScore);
 	}
 
 	public int compareTo(YearQuerie other) {
