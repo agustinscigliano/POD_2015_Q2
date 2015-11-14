@@ -80,6 +80,8 @@ public class My_Client
 		} 
 		catch (Exception e) 
 		{
+			System.out.println("error");
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 

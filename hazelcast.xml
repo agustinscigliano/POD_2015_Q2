@@ -241,6 +241,11 @@
 
     <serialization>
         <portable-version>0</portable-version>
+<!--    <data-serializable-factories>
+	      <data-serializable-factory
+	        factory-id="1">ar.edu.itba.model.MovieDataSerializableFactory
+	      </data-serializable-factory>
+        </data-serializable-factories> -->
     </serialization>
 
     <services enable-defaults="true"/>

@@ -1,7 +1,12 @@
 package ar.edu.itba.model;
 
+import java.io.IOException;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
+import com.hazelcast.nio.serialization.DataSerializable;
 
 /**
  *Si el campo director tiene más de 1 director no es necesario separarlos, 
@@ -18,40 +23,44 @@ En la primera query (N actors) se devuelve exactamente N no más o no menos.
  de los mismos por el nombre del actor alfabeticamente.
  *
  */
-public class Movie {
-	private final String Title = null;
-	private final String Year = null;
-	private final String rated = null;
-	private final String released = null;
-	private final String Runtime = null;
-	private final String Genre = null;
-	private final String Director = null;
-	private final String Writer = null;
-	private final String Actors = null;
-	private final String Plots = null;
-	private final String Language = null;
-	private final String Poster = null;
-	private final String Metascore = null;
-	private final String imdbRating = null;
-	private final String imdbVotes = null;
-	private final String imdbID = null;
-	private final String Type = null;
-	private final String tomatoMeter = null;
-	private final String tomatoImage = null;
-	private final String tomatoRating = null;
-	private final String tomatoReviews = null;
-	private final String tomatoFresh = null;
-	private final String tomatoRotten = null;
-	private final String tomatoConsensus = null;
-	private final String tomatoUserMeter = null;
-	private final String tomatoUserRating = null;
-	private final String tomatoUserReviews = null;
-	private final String DVD = null;
-	private final String BoxOffice = null;
-	private final String Production = null;
-	private final String Website = null;
-	private final String Response = null;
-	
+public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
+	private String Title = null;
+	private String Year = null;
+	private String rated = null;
+	private String released = null;
+	private String Runtime = null;
+	private String Genre = null;
+	private String Director = null;
+	private String Writer = null;
+	private String Actors = null;
+	private String Plots = null;
+	private String Language = null;
+	private String Poster = null;
+	private String Metascore = null;
+	private String imdbRating = null;
+	private String imdbVotes = null;
+	private String imdbID = null;
+	private String Type = null;
+	private String tomatoMeter = null;
+	private String tomatoImage = null;
+	private String tomatoRating = null;
+	private String tomatoReviews = null;
+	private String tomatoFresh = null;
+	private String tomatoRotten = null;
+	private String tomatoConsensus = null;
+	private String tomatoUserMeter = null;
+	private String tomatoUserRating = null;
+	private String tomatoUserReviews = null;
+	private String DVD = null;
+	private String BoxOffice = null;
+	private String Production = null;
+	private String Website = null;
+	private String Response = null;
+
+	public Movie() {
+
+	}
+
 	public String getTitle() {
 		return Title;
 	}
@@ -194,6 +203,51 @@ public class Movie {
 		String json = gson.toJson(this);
 		return json;
 	}
+
+	public void fromString(String movieJSON) {
+		Gson gson = new GsonBuilder().create();
+		Movie m = gson.fromJson(movieJSON, Movie.class);
+		this.Title = m.Title;
+		this.Year = m.Year;
+		this.rated = m.rated;
+		this.released = m.released;
+		this.Runtime = m.Runtime;
+		this.Genre = m.Genre;
+		this.Director = m.Director;
+		this.Writer = m.Writer;
+		this.Actors = m.Actors;
+		this.Plots = m.Plots;
+		this.Language = m.Language;
+		this.Poster = m.Poster;
+		this.Metascore = m.Metascore;
+		this.imdbRating = m.imdbRating;
+		this.imdbVotes = m.imdbVotes;
+		this.imdbID = m.imdbID;
+		this.Type = m.Type;
+		this.tomatoMeter = m.tomatoMeter;
+		this.tomatoReviews = m.tomatoReviews;
+	}
+
+	@Override
+	public void readData(ObjectDataInput in) throws IOException {
+		String json	= in.readUTF();
+		fromString(json);
+	}
+
+	@Override
+	public void writeData(ObjectDataOutput out) throws IOException {
+		out.writeUTF(toString());		
+	}
+//	@Override
+//	public int getFactoryId() {
+//		System.out.println("FactoryID");
+//		return MovieDataSerializableFactory.FACTORY_ID;
+//	}
+//	@Override
+//	public int getId() {
+//		System.out.println("getId");
+//		return MovieDataSerializableFactory.MOVIE_TYPE;
+//	}
 }
 //{"Title":"300: Rise of an Empire",
 //"Year":"2014",

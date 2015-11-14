@@ -15,7 +15,7 @@ public class MovieLoader {
 			movies.put("key", currentMovie);
 		}
 	}
-	private static Movie[] loadMovies(final String jsonPath) throws IOException{
+	public static Movie[] loadMovies(final String jsonPath) throws IOException{
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(
 				new FileReader(jsonPath));
