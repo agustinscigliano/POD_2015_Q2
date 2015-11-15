@@ -13,7 +13,7 @@ public class ReducerForYearQuerie implements ReducerFactory<Integer, YearQuerie,
 	    {
 	        private YearQuerie max;
 	        
-	        public void beginReduce()  // una sola vez en cada instancia
+	        public void beginReduce()  
 	        {
 	            max= new YearQuerie(-1, "");
 	        }
@@ -26,6 +26,7 @@ public class ReducerForYearQuerie implements ReducerFactory<Integer, YearQuerie,
 	
 	        public YearQuerie finalizeReduce() 
 	        {
+	        	System.out.println(String.format("FinalReduce for %d = %s", year, max));
 	            return max ;
 	        }
 	    };

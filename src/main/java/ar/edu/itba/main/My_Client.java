@@ -1,11 +1,15 @@
 package ar.edu.itba.main;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import ar.edu.itba.mapreduce.MapperForYearQuerie;
-import ar.edu.itba.mapreduce.ReducerForYearQuerie;
-import ar.edu.itba.mapreduce.YearQuerie;
+import ar.edu.itba.mapreduce.ActorsQuerie;
+import ar.edu.itba.mapreduce.CollatorForActorsQuerie;
+import ar.edu.itba.mapreduce.MapperForActorsQuerie;
+import ar.edu.itba.mapreduce.ReducerForActorsQuerie;
 import ar.edu.itba.model.Movie;
 import ar.edu.itba.model.MovieLoader;
 import ar.edu.itba.util.QueryAnalyzer;
@@ -45,7 +49,7 @@ public class My_Client
 
 	}
 	private static void client() throws InterruptedException, ExecutionException{
-		
+
 		//String name= System.getProperty("name");
 		String pass= System.getProperty("pass");
 		if (pass == null)
@@ -77,7 +81,7 @@ public class My_Client
 		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
 		try 
 		{
-			MovieLoader.loadMovies(MEDIUM,myMap);
+			MovieLoader.loadMovies(SMALL,myMap);
 		} 
 		catch (Exception e) 
 		{
@@ -85,7 +89,6 @@ public class My_Client
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-
 
 		// Ahora el JobTracker y los Workers!
 		JobTracker tracker = client.getJobTracker("default");
@@ -95,12 +98,30 @@ public class My_Client
 		Job<String, Movie> job = tracker.newJob(source);
 
 		// Orquestacion de Jobs y lanzamiento
-		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
-				.mapper(new MapperForYearQuerie()) 
-				.reducer(new ReducerForYearQuerie())
-				.submit(); 
+		ICompletableFuture<List<ActorsQuerie>> future = job 
+				.mapper(new MapperForActorsQuerie()) 
+				.reducer(new ReducerForActorsQuerie())
+				.submit(new CollatorForActorsQuerie(5)); 
+
+		//		ICompletableFuture<Map<String, Set<String>>> future = job 
+		//				.mapper(new MapperForActorsQuerie()) 
+		//				.reducer(new ReducerForActorsQuerie())
+		//				.submit(); 
 
 		// Tomar resultado e Imprimirlo
-		Map<Integer, YearQuerie> rta = future.get();
+		//		Map<String, Set<String>> rta = future.get();
+		//		 for (Entry<String, Set<String>> e : rta.entrySet()) 
+		//		    {
+		//		    	System.out.println(String.format("Director %s => Actores %s",
+		//		    			e.getKey(), e.getValue() ));
+		//			}
+		//		 
+
+		List<ActorsQuerie> rta = future.get();
+		for (ActorsQuerie actor : rta) 
+		{
+			System.out.println("Actor: " + actor.getName() +" => Votos: "+ actor.getVotes());
+		}
+
 	}
 }

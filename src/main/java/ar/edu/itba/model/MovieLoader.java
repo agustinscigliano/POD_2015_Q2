@@ -12,7 +12,7 @@ public class MovieLoader {
 	public static void loadMovies(final String jsonPath, final IMap <String, Movie> movies) throws IOException{
 		Movie[] movieArray = loadMovies(jsonPath);
 		for (Movie currentMovie : movieArray) {
-			movies.put("key", currentMovie);
+			movies.put(currentMovie.getTitle(), currentMovie);
 		}
 	}
 	public static Movie[] loadMovies(final String jsonPath) throws IOException{
