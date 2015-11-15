@@ -1,6 +1,8 @@
 package ar.edu.itba.model;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -97,8 +99,12 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 		return Writer;
 	}
 
-	public String getActors() {
-		return Actors;
+	public List<String> getActors() {
+		try{
+			return Arrays.asList(Actors.split("\\s*,\\s*"));
+		}catch(Exception e){
+			return null;
+		}
 	}
 
 	public String getPlots() {
@@ -121,12 +127,20 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 		}
 	}
 
-	public String getImdbRating() {
-		return imdbRating;
+	public Float getImdbRating() {
+		try{
+			return Float.valueOf(imdbRating);
+		}catch(Exception e){
+			return 0f;
+		}
 	}
 
-	public String getImdbVotes() {
-		return imdbVotes;
+	public Long getImdbVotes() {
+		try{
+			return Long.valueOf(imdbVotes);
+		}catch(Exception e){
+			return 0l;
+		}
 	}
 
 	public String getImdbID() {
@@ -226,6 +240,17 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 		this.Type = m.Type;
 		this.tomatoMeter = m.tomatoMeter;
 		this.tomatoReviews = m.tomatoReviews;
+		this.tomatoFresh = m.tomatoFresh;
+		this.tomatoRotten = m.tomatoRotten;
+		this.tomatoConsensus = m.tomatoConsensus;
+		this.tomatoUserMeter = m.tomatoUserMeter;
+		this.tomatoUserRating = m.tomatoUserRating;
+		this.tomatoUserReviews = m.tomatoUserReviews;
+		this.DVD = m.DVD;
+		this.BoxOffice = m.BoxOffice;
+		this.Production = m.Production;
+		this.Website = m.Website;
+		this.Response = m.Response;
 	}
 
 	@Override
@@ -238,16 +263,16 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 	public void writeData(ObjectDataOutput out) throws IOException {
 		out.writeUTF(toString());		
 	}
-//	@Override
-//	public int getFactoryId() {
-//		System.out.println("FactoryID");
-//		return MovieDataSerializableFactory.FACTORY_ID;
-//	}
-//	@Override
-//	public int getId() {
-//		System.out.println("getId");
-//		return MovieDataSerializableFactory.MOVIE_TYPE;
-//	}
+	//	@Override
+	//	public int getFactoryId() {
+	//		System.out.println("FactoryID");
+	//		return MovieDataSerializableFactory.FACTORY_ID;
+	//	}
+	//	@Override
+	//	public int getId() {
+	//		System.out.println("getId");
+	//		return MovieDataSerializableFactory.MOVIE_TYPE;
+	//	}
 }
 //{"Title":"300: Rise of an Empire",
 //"Year":"2014",
