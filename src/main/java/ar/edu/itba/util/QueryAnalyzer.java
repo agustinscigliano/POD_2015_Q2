@@ -69,7 +69,7 @@ public class QueryAnalyzer {
 			printHelp();
 			System.out.println("no params running job 1");
 			printTimestamp("INFO - Start map/reduce");
-			runJob4();
+			runJob1(5);
 			printTimestamp("INFO - End map/reduce");
 		}
 	}
