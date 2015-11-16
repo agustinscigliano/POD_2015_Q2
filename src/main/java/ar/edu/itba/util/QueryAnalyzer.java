@@ -1,5 +1,7 @@
 package ar.edu.itba.util;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,28 +49,27 @@ public class QueryAnalyzer {
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
 			switch(qNumber){
-			//				1. Los N​actores (de películas) más populares (popularidad se da por la cantidad de
+			//				1. Los N​actores (de películas) mas populares (popularidad se da por la cantidad de
 			//						votos que recibieron en IMDB). Donde N​lo provee el usuario.
 			case 1:
 
 				int N = Integer.valueOf((String)analyzer.get("N"));
-				System.out.println(N);
 				runJob1(N);
 				break;
-				//				2. Por cada año, mayor al año Tope​, ​las películas más aclamadas por la crítica (todas
+				//				2. Por cada anio, mayor al año Tope​, ​las películas más aclamadas por la critica (todas
 				//					las que tienen el valor mayor de Metascore). Donde Tope​lo provee el usuario.
 			case 2:
 				String tope = (String)analyzer.get("Tope");
 				runJob2(tope);
 				break;
 				//				3. Las parejas de actores que más veces actuaron juntos y para cada una de ellas
-				//				cuáles fueron las películas en las que actuaron.
+				//				cuales fueron las películas en las que actuaron.
 			case 3:
 
 				System.out.println("execute 3");
 				break;
-				//				4. Por cada director cuál es su actor (o actores) fetiche, o sea los que actuaron en más
-				//				películas del director.
+				//				4. Por cada director cual es su actor (o actores) fetiche, o sea los que actuaron en más
+				//				peliculas del director.
 			case 4:
 				System.out.println("execute 4");
 				break;
@@ -77,7 +78,9 @@ public class QueryAnalyzer {
 		catch(Exception e){
 			printHelp();
 			System.out.println("no params running job 1");
+			printTimestamp("INFO - Start map/reduce");
 			runJob4();
+			printTimestamp("INFO - End map/reduce");
 		}
 	}
 	private void printHelp(){
@@ -116,7 +119,9 @@ public class QueryAnalyzer {
 		IMap<String, Movie> myMap = client.getMap(MAP_NAME);
 		try 
 		{
+			printTimestamp("INFO - Start reading");
 			MovieLoader.loadMovies(path,myMap);
+			printTimestamp("INFO - End reading");
 		} 
 		catch (Exception e) 
 		{
@@ -147,15 +152,15 @@ public class QueryAnalyzer {
 		}
 	}
 	private void runJob2(String tope) throws InterruptedException, ExecutionException{
-		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
-				.mapper(new MapperForYearQuerie(tope)) 
-				.reducer(new ReducerForYearQuerie())
-				.submit(); 
-		Map<Integer, YearQuerie> rta = future.get();
-		for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
-			System.out.println(String.format("Year %d => %s",
-					e.getKey(), e.getValue() ));
-		}
+//		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
+//				.mapper(new MapperForYearQuerie(tope)) 
+//				.reducer(new ReducerForYearQuerie())
+//				.submit(); 
+//		Map<Integer, YearQuerie> rta = future.get();
+//		for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
+//			System.out.println(String.format("Year %d => %s",
+//					e.getKey(), e.getValue() ));
+//		}
 	}
 	private void runJob4() throws InterruptedException, ExecutionException{
 		ICompletableFuture<Map<String, Set<String>>> future = job 
@@ -170,6 +175,13 @@ public class QueryAnalyzer {
 					e.getKey(), e.getValue() ));
 		}
 
+	}
+	
+	private void printTimestamp(String moment){
+		java.util.Date date= new java.util.Date();
+		Timestamp myTimestamp = new Timestamp(date.getTime());
+		String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSSS").format(myTimestamp);
+		System.out.println(S+" "+moment);
 	}
 
 }
