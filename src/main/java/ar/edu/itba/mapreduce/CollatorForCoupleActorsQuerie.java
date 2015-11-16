@@ -1,37 +1,32 @@
 package ar.edu.itba.mapreduce;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.hazelcast.mapreduce.Collator;
 
-public class CollatorForCoupleActorsQuerie implements Collator<Map.Entry<Set<String>, Set<String>>, List<ActorsQuerie>>{
+public class CollatorForCoupleActorsQuerie implements Collator<Map.Entry<Set<String>, Set<String>>, Set<Entry<Set<String>, Set<String>>>>{
 	
 	
 	public CollatorForCoupleActorsQuerie() {
 	}
 	
 	@Override
-	public List<ActorsQuerie> collate(Iterable<Entry<Set<String>, Set<String>>> values) {
-		final Set<ActorsQuerie> sortedActors = new TreeSet<>();
-		for (final Entry<String, ActorsQuerie> entry : values) {
-			final ActorsQuerie actor = entry.getValue();
-			sortedActors.add(actor);
-		}
-		final List<ActorsQuerie> list = new ArrayList<>();
-		int i = 0;
-		for (final ActorsQuerie actor : sortedActors) {
-			if (i == top) {
-				return list;
+	public Set<Entry<Set<String>, Set<String>>> collate(Iterable<Entry<Set<String>, Set<String>>> values) {
+		int max = 0;
+		final Set<Entry<Set<String>, Set<String>>> mostMoviesCouples = new HashSet<>();
+		for (final Entry<Set<String>, Set<String>> entry : values) {
+			int numberMovies = entry.getValue().size();
+			if(numberMovies > max) {
+				mostMoviesCouples.clear();
+				mostMoviesCouples.add(entry);
+			} else if (numberMovies == max) {
+				mostMoviesCouples.add(entry);
 			}
-			list.add(actor);
-			i++;
 		}
-		return list;
+		return mostMoviesCouples;
 	}
 
 
