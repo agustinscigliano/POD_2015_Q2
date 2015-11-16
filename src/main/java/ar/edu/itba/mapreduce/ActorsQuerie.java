@@ -44,7 +44,7 @@ public class ActorsQuerie implements DataSerializable, Comparable<ActorsQuerie>{
 	
 	@Override
 	public String toString() {
-		return name + " --> " + votes + " votes.";
+		return "Actor: " + name + " with " + votes + " votes.";
 	}
 
 	@Override
