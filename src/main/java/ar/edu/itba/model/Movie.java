@@ -61,10 +61,19 @@ public class Movie  implements DataSerializable{
 	private String Website = null;
 	private String Response = null;
 	private transient NumberFormat format= null;
+	private int puk = -1;
+
 	public Movie() {
 		 format = NumberFormat.getInstance(Locale.US);
 	}
-
+	public void setKey(int key){
+		if(puk != -1)
+			throw new IllegalStateException("The key was already set.");
+		this.puk=key;
+	}
+	public int getKey() {
+		return puk;
+	}
 	public String getTitle() {
 		return Title;
 	}
@@ -261,10 +270,33 @@ public class Movie  implements DataSerializable{
 	public void readData(ObjectDataInput in) throws IOException {
 		String json	= in.readUTF();
 		fromString(json);
+		this.puk = in.readInt();
 	}
 
 	@Override
 	public void writeData(ObjectDataOutput out) throws IOException {
-		out.writeUTF(toString());		
+		out.writeUTF(toString());
+		out.writeInt(puk);
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + puk;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Movie other = (Movie) obj;
+		if (puk != other.puk)
+			return false;
+		return true;
 	}
 }

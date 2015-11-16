@@ -11,9 +11,11 @@ public class MovieLoader {
 		
 	public static void loadMovies(final String jsonPath, final IMap <String, Movie> movies) throws IOException{
 		Movie[] movieArray = loadMovies(jsonPath);
+		int autoincrementalId = 0;
 		for (Movie currentMovie : movieArray) {
 			if(currentMovie.getType().equals("movie")){
-				String key = currentMovie.getTitle()+currentMovie.getYear();
+				currentMovie.setKey(autoincrementalId++);
+				String key = String.valueOf(currentMovie.getKey());//currentMovie.getTitle()+currentMovie.getYear();
 				movies.put(key, currentMovie);
 			}
 		}

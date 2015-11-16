@@ -45,7 +45,7 @@ public class QueryAnalyzer {
 
 		try{
 			String path = (String)analyzer.get("query");
-			path = path != null? path: SMALL;
+			path = path != null? path: LARGE;
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
 			switch(qNumber){
