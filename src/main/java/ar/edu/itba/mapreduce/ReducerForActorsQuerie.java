@@ -14,7 +14,7 @@ public class ReducerForActorsQuerie implements ReducerFactory<String, ActorsQuer
 
 			@Override
 				public void beginReduce() {
-				actorSum = new ActorsQuerie(actor,0L);
+				actorSum = new ActorsQuerie(actor,0);
 			}
 
 			@Override
