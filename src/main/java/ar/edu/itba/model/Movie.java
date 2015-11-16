@@ -1,8 +1,10 @@
 package ar.edu.itba.model;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,9 +60,9 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 	private String Production = null;
 	private String Website = null;
 	private String Response = null;
-
+	private transient NumberFormat format= null;
 	public Movie() {
-
+		 format = NumberFormat.getInstance(Locale.US);
 	}
 
 	public String getTitle() {
@@ -137,7 +139,9 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 
 	public Long getImdbVotes() {
 		try{
-			return Long.valueOf(imdbVotes);
+			
+		    Number number = format.parse(imdbVotes);
+			return number.longValue();
 		}catch(Exception e){
 			return 0l;
 		}
