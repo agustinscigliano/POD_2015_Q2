@@ -1,0 +1,16 @@
+Remember to add command line args in here!
+Connecting with cluster dev-name [51277-51141]
+INFO - addresses: 10.6.0.122
+INFO - addresses: 10.6.0.100
+INFO - addresses: 10.6.0.128
+INFO - addresses: 10.6.0.127
+INFO - addresses: 10.6.0.133
+INFO - addresses: 10.6.0.130
+INFO - addresses: 10.6.0.132
+com.hazelcast.client.proxy.ClientClusterProxy@e4436
+11/16/2015 15:23:32.0849 INFO - Start reading
+11/16/2015 15:24:18.0656 INFO - End reading
+11/16/2015 15:24:18.0670 INFO - Start map/reduce
+PARSER - Running job 3
+Actores: [Michael Barkann, Bill Macatee] => Peliculas [The 1999 US Open Tennis Championships, The 1997 French Open Championships, The 2001 French Open Championships, The 1999 French Open Championships, US Open 1996, The 2004 US Open Tennis Championships, The 1998 French Open Championships, The 1994 US Open Tennis Championships, The 2000 French Open Championships, The 1998 US Open Tennis Championships, The 2003 US Open Tennis Championships, The 1997 US Open Tennis Championships, The 1995 French Open Championships, The 2000 US Open Tennis Championships, The 1996 French Open Championships]
+11/16/2015 15:24:29.0392 INFO - End map/reduce

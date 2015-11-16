@@ -1,0 +1,8 @@
+Remember to add command line args in here!
+Connecting with cluster dev-name [51277-51141]
+INFO - addresses: 10.6.0.122
+INFO - addresses: 10.6.0.100
+INFO - addresses: 10.6.0.128
+INFO - addresses: 10.6.0.127
+com.hazelcast.client.proxy.ClientClusterProxy@1df2ecc
+11/16/2015 16:03:53.0760 INFO - Start reading
