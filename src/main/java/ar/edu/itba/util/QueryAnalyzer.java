@@ -50,7 +50,7 @@ public class QueryAnalyzer {
 	public void run() throws InterruptedException, ExecutionException{
 
 		try{
-			String path = (String)analyzer.get("query");
+			String path = (String)analyzer.get("path");
 			path = path != null? path: DEFAULT_FILE;
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
