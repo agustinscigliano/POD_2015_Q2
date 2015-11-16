@@ -12,6 +12,11 @@ public class Analyzer
 {
 	private HashMap<String, Object> p= new HashMap<String, Object>();
 
+	/**
+	 * a command line argument key in UPPERCASE
+	 * @param key
+	 * @return assocaited object
+	 */
 	public Object get(String key)
 	{
 		return p.get(key);
@@ -28,10 +33,6 @@ public class Analyzer
 
 	public Analyzer(String[] args)
 	{
-		// default
-		p.put("HOSTNAME", "localhost");
-		p.put("PORT", 1099);
-		p.put("SERVICE", "SuperServicio");
 
 		for(int i= 0; i < args.length; i++) 
 		{
@@ -45,23 +46,7 @@ public class Analyzer
 				continue;
 			}
 			String value = scanner.next();
-
-			if (vble.trim().equalsIgnoreCase("PORT"))
-			{
-				try 
-				{
-					int port = Integer.parseInt(value);
-					p.put("PORT", port);
-				} 
-				catch (NumberFormatException e) 
-				{
-					System.err.println(String.format("Ignoring the incorrect parameter. %s is not a valid port number", value ));
-				}
-			}
-			else
-			{
-				p.put(vble.toUpperCase(), value);
-			}
+			p.put(vble.toUpperCase(), value);
 			scanner.close();
 
 		}

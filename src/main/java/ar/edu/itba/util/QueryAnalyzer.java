@@ -50,50 +50,51 @@ public class QueryAnalyzer {
 	public void run() throws InterruptedException, ExecutionException{
 
 		try{
-			String path = (String)analyzer.get("path");
+			String path = (String)analyzer.get("PATH");
 			path = path != null? path: DEFAULT_FILE;
 			this.job = prepareJob(path);
-			int qNumber = Integer.valueOf((String)analyzer.get("query"));
+			int qNumber = Integer.valueOf((String)analyzer.get("QUERY"));
 			printTimestamp("INFO - Start map/reduce");
 			switch(qNumber){
 			case 1:
 				int N = Integer.valueOf((String)analyzer.get("N"));
-				System.out.println("Running job 1, N = "+N);
+				System.out.println("PARSER - Running job 1, N = "+N);
 				runJob1(N);
 				break;
 			case 2:
-				String topeS = (String)analyzer.get("Tope");
+				String topeS = (String)analyzer.get("TOPE");
 				Integer tope = Integer.valueOf(topeS);
-				System.out.println("Running job 2, Tope = "+ tope);
+				System.out.println("PARSER - Running job 2, Tope = "+ tope);
 				runJob2(tope);
 				break;
 			case 3:
-				System.out.println("Running job 3");
+				System.out.println("PARSER - Running job 3");
 				runJob3();
 				break;
 			case 4:
-				System.out.println("Running job 4");
+				System.out.println("PARSER - Running job 4");
 				runJob4();
 				break;
 			}
 			printTimestamp("INFO - End map/reduce");
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			printHelp();
 		}
 	}
 	private void printHelp(){
-		System.out.println("Wrong command, help:");	
+		System.out.println("PARSER - Wrong command, help:");	
 		System.out.println("Invocation example");
-		System.out.println("java -jar path_tojar query=[1,2,3,4] *  **path=path_to_json address=list_of_nodes_ip");
+		System.out.println("java -jar path_tojar query=[1,2,3,4] *  **path=path_to_json addresses=127.0.0.1;10.6.0.72");
 		System.out.println("*Aditional Params:");
 		System.out.println("for query 1: n=[1,..n]");
 		System.out.println("for query 2: Tope=1993");
 		
 		System.out.println("Path defaults to" + DEFAULT_FILE);
-		System.out.println("Name IS" + NAME);
-		System.out.println("Pass IS" + PASS);
-		System.out.println("Address defaults to" + ADDRESSES);
+		System.out.println("Name IS " + NAME);
+		System.out.println("Pass IS " + PASS);
+		System.out.println("Address defaults to " + ADDRESSES);
 	}
 	private Job<String, Movie> prepareJob(String path) throws InterruptedException, ExecutionException{
 
@@ -108,10 +109,14 @@ public class QueryAnalyzer {
 
 		// no hay descubrimiento automatico, 
 		// pero si no decimos nada intentarusar LOCALHOST
-		String addresses= System.getProperty("addresses");
+		String addresses= (String)analyzer.get("ADDRESSES");//System.getProperty("addresses");
 		addresses = addresses != null?addresses:ADDRESSES;
 		
 		String[] arrayAddresses= addresses.split("[,;]");
+		for (String address : arrayAddresses) {
+			System.out.println("INFO - addresses: "+ address);
+		}
+		
 		ClientNetworkConfig net= new ClientNetworkConfig();
 		net.addAddress(arrayAddresses);
 		ccfg.setNetworkConfig(net);
