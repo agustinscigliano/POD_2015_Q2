@@ -20,6 +20,7 @@ public class CollatorForCoupleActorsQuerie implements Collator<Map.Entry<Set<Str
 		for (final Entry<Set<String>, Set<String>> entry : values) {
 			int numberMovies = entry.getValue().size();
 			if(numberMovies > max) {
+				max = numberMovies;
 				mostMoviesCouples.clear();
 				mostMoviesCouples.add(entry);
 			} else if (numberMovies == max) {
