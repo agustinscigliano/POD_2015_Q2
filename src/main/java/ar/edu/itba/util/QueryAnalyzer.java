@@ -10,10 +10,13 @@ import java.util.concurrent.ExecutionException;
 
 import ar.edu.itba.mapreduce.ActorsQuerie;
 import ar.edu.itba.mapreduce.CollatorForActorsQuerie;
+import ar.edu.itba.mapreduce.CollatorForCoupleActorsQuerie;
 import ar.edu.itba.mapreduce.MapperForActorsQuerie;
+import ar.edu.itba.mapreduce.MapperForCoupleActorsQuerie;
 import ar.edu.itba.mapreduce.MapperForDirectorQuerie;
 import ar.edu.itba.mapreduce.MapperForYearQuerie;
 import ar.edu.itba.mapreduce.ReducerForActorsQuerie;
+import ar.edu.itba.mapreduce.ReducerForCoupleActorsQuerie;
 import ar.edu.itba.mapreduce.ReducerForDirectorQuerie;
 import ar.edu.itba.mapreduce.ReducerForYearQuerie;
 import ar.edu.itba.mapreduce.YearQuerie;
@@ -45,7 +48,7 @@ public class QueryAnalyzer {
 
 		try{
 			String path = (String)analyzer.get("query");
-			path = path != null? path: LARGE;
+			path = path != null? path: SMALL;
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
 			switch(qNumber){
@@ -55,7 +58,7 @@ public class QueryAnalyzer {
 				break;
 			case 2:
 				String tope = (String)analyzer.get("Tope");
-				runJob2(tope);
+				//runJob2(tope);
 				break;
 			case 3:
 				System.out.println("execute 3");
@@ -69,7 +72,7 @@ public class QueryAnalyzer {
 			printHelp();
 			System.out.println("no params running job 1");
 			printTimestamp("INFO - Start map/reduce");
-			runJob1(5);
+			runJob2(2000);
 			printTimestamp("INFO - End map/reduce");
 		}
 	}
@@ -141,16 +144,16 @@ public class QueryAnalyzer {
 			System.out.println(actor);
 		}
 	}
-	private void runJob2(String tope) throws InterruptedException, ExecutionException{
-		//		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
-		//				.mapper(new MapperForYearQuerie(tope)) 
-		//				.reducer(new ReducerForYearQuerie())
-		//				.submit(); 
-		//		Map<Integer, YearQuerie> rta = future.get();
-		//		for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
-		//			System.out.println(String.format("Year %d => %s",
-		//					e.getKey(), e.getValue() ));
-		//		}
+	private void runJob2(int tope) throws InterruptedException, ExecutionException{
+				ICompletableFuture<Map<Integer, YearQuerie>> future = job 
+						.mapper(new MapperForYearQuerie(tope)) 
+						.reducer(new ReducerForYearQuerie())
+						.submit(); 
+				Map<Integer, YearQuerie> rta = future.get();
+				for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
+					System.out.println(String.format("Year %d => %s",
+							e.getKey(), e.getValue() ));
+				}
 	}
 	private void runJob4() throws InterruptedException, ExecutionException{
 		ICompletableFuture<Map<String, Set<String>>> future = job 
@@ -162,6 +165,21 @@ public class QueryAnalyzer {
 		for (Entry<String, Set<String>> e : rta.entrySet()) 
 		{
 			System.out.println(String.format("Director %s => Actores %s",
+					e.getKey(), e.getValue() ));
+		}
+
+	}
+	
+	private void runJob3() throws InterruptedException, ExecutionException{
+		ICompletableFuture<Set<Entry<Set<String>, Set<String>>>> future = job 
+				.mapper(new MapperForCoupleActorsQuerie()) 
+				.reducer(new ReducerForCoupleActorsQuerie())
+				.submit(new CollatorForCoupleActorsQuerie()); 
+
+		Set<Entry<Set<String>, Set<String>>> rta = future.get();
+		for (Entry<Set<String>, Set<String>> e : rta) 
+		{
+			System.out.println(String.format("Actores: %s => Peliculas %s",
 					e.getKey(), e.getValue() ));
 		}
 
