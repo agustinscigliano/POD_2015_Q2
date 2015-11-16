@@ -49,20 +49,20 @@ public class QueryAnalyzer {
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
 			switch(qNumber){
-			//				1. Los N​actores (de películas) mas populares (popularidad se da por la cantidad de
+			//				1. Los N​actores (de peliculas) mas populares (popularidad se da por la cantidad de
 			//						votos que recibieron en IMDB). Donde N​lo provee el usuario.
 			case 1:
 
 				int N = Integer.valueOf((String)analyzer.get("N"));
 				runJob1(N);
 				break;
-				//				2. Por cada anio, mayor al año Tope​, ​las películas más aclamadas por la critica (todas
+				//				2. Por cada anio, mayor al año Tope​, ​las peliculas mas aclamadas por la critica (todas
 				//					las que tienen el valor mayor de Metascore). Donde Tope​lo provee el usuario.
 			case 2:
 				String tope = (String)analyzer.get("Tope");
 				runJob2(tope);
 				break;
-				//				3. Las parejas de actores que más veces actuaron juntos y para cada una de ellas
+				//				3. Las parejas de actores que mas veces actuaron juntos y para cada una de ellas
 				//				cuales fueron las películas en las que actuaron.
 			case 3:
 
