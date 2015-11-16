@@ -42,34 +42,24 @@ public class QueryAnalyzer {
 		analyzer = new Analyzer(args);		
 	}
 	public void run() throws InterruptedException, ExecutionException{
-		
+
 		try{
 			String path = (String)analyzer.get("query");
 			path = path != null? path: SMALL;
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
 			switch(qNumber){
-//Los N​actores (de peliculas) mas populares (popularidad se da por la cantidad de
-//votos que recibieron en IMDB). Donde N​ lo provee el usuario.
 			case 1:
-
 				int N = Integer.valueOf((String)analyzer.get("N"));
 				runJob1(N);
 				break;
-//Por cada anio, mayor al anio Tope​, ​las peliculas mas aclamadas por la critica (todas
-//las que tienen el valor mayor de Metascore). Donde Tope​ lo provee el usuario.
 			case 2:
 				String tope = (String)analyzer.get("Tope");
 				runJob2(tope);
 				break;
-//Las parejas de actores que mas veces actuaron juntos y para cada una de ellas
-//cuales fueron las películas en las que actuaron.
 			case 3:
-
 				System.out.println("execute 3");
 				break;
-//Por cada director cual es su actor (o actores) fetiche, o sea los que actuaron en mas
-//peliculas del director.
 			case 4:
 				System.out.println("execute 4");
 				break;
@@ -139,7 +129,7 @@ public class QueryAnalyzer {
 		return job;
 
 	}
-	
+
 	private void runJob1(int N) throws InterruptedException, ExecutionException{
 		ICompletableFuture<List<ActorsQuerie>> future = job 
 				.mapper(new MapperForActorsQuerie()) 
@@ -152,15 +142,15 @@ public class QueryAnalyzer {
 		}
 	}
 	private void runJob2(String tope) throws InterruptedException, ExecutionException{
-//		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
-//				.mapper(new MapperForYearQuerie(tope)) 
-//				.reducer(new ReducerForYearQuerie())
-//				.submit(); 
-//		Map<Integer, YearQuerie> rta = future.get();
-//		for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
-//			System.out.println(String.format("Year %d => %s",
-//					e.getKey(), e.getValue() ));
-//		}
+		//		ICompletableFuture<Map<Integer, YearQuerie>> future = job 
+		//				.mapper(new MapperForYearQuerie(tope)) 
+		//				.reducer(new ReducerForYearQuerie())
+		//				.submit(); 
+		//		Map<Integer, YearQuerie> rta = future.get();
+		//		for (Entry<Integer, YearQuerie> e : rta.entrySet()) {
+		//			System.out.println(String.format("Year %d => %s",
+		//					e.getKey(), e.getValue() ));
+		//		}
 	}
 	private void runJob4() throws InterruptedException, ExecutionException{
 		ICompletableFuture<Map<String, Set<String>>> future = job 
@@ -176,7 +166,7 @@ public class QueryAnalyzer {
 		}
 
 	}
-	
+
 	private void printTimestamp(String moment){
 		java.util.Date date= new java.util.Date();
 		Timestamp myTimestamp = new Timestamp(date.getTime());
