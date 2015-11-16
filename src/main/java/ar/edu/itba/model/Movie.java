@@ -13,21 +13,21 @@ import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.DataSerializable;
 
 /**
- *Si el campo director tiene más de 1 director no es necesario separarlos, 
- *tomenlo como un director único. O sea si una pelicula tiene como "Director": 
+ *Si el campo director tiene mas de 1 director no es necesario separarlos, 
+ *tomenlo como un director unico. O sea si una pelicula tiene como "Director": 
  *"Kevin Smith, Woody Allen" el director a tomar "Kevin Smith, Woody Allen" que 
  *obviamente es diferente del director  "Kevin Smith" y del director  "Woody Allen"
  */
 /**
  * Nuevas Aclaraciones:
-"N/A" son directores  y actores válidos (no se descartan)
-"N/A "en campos numéricos se deben reemplazar por 0 (no se descartan)
-En la primera query (N actors) se devuelve exactamente N no más o no menos.
- Si dos o más actores empatan en la cantidad de votos se resuelve el orden 
+"N/A" son directores  y actores validos (no se descartan)
+"N/A "en campos numericos se deben reemplazar por 0 (no se descartan)
+En la primera query (N actors) se devuelve exactamente N no mas o no menos.
+ Si dos o mas actores empatan en la cantidad de votos se resuelve el orden 
  de los mismos por el nombre del actor alfabeticamente.
  *
  */
-public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
+public class Movie  implements DataSerializable{
 	private String Title = null;
 	private String Year = null;
 	private String rated = null;
@@ -267,35 +267,4 @@ public class Movie  implements DataSerializable /*IdentifiedDataSerializable*/{
 	public void writeData(ObjectDataOutput out) throws IOException {
 		out.writeUTF(toString());		
 	}
-	//	@Override
-	//	public int getFactoryId() {
-	//		System.out.println("FactoryID");
-	//		return MovieDataSerializableFactory.FACTORY_ID;
-	//	}
-	//	@Override
-	//	public int getId() {
-	//		System.out.println("getId");
-	//		return MovieDataSerializableFactory.MOVIE_TYPE;
-	//	}
 }
-//{"Title":"300: Rise of an Empire",
-//"Year":"2014",
-//"Rated":"R","Released":"07 Mar 2014","Runtime":"102 min",
-//"Genre":"Action, Drama, Fantasy",
-//"Director":"Noam Murro",
-//"Writer":"Zack Snyder (screenplay), Kurt Johnstad (screenplay), Frank Miller (graphic novel \"Xerxes\")",
-//"Actors":"Sullivan Stapleton, Eva Green, Lena Headey, Hans Matheson",
-//"Plot":"Greek general Themistokles leads the charge against invading Persian forces led by mortal-turned-god Xerxes and Artemisia, vengeful commander of the Persian navy.",
-//"Language":"English","Country":"USA","Awards":"6 nominations.",
-//"Poster":"http://ia.media-imdb.com/images/M/MV5BMTEwNTU2MjAwMDdeQTJeQWpwZ15BbWU3MDk2Njc2Njk@._V1_SX300.jpg","Metascore":"48",
-//"imdbRating":"6.3","imdbVotes":"204,132","imdbID":"tt1253863",
-//"Type":"movie","tomatoMeter":"42",
-//"tomatoImage":"rotten","tomatoRating":"4.9","tomatoReviews":"171",
-//"tomatoFresh":"72","tomatoRotten":"99",
-//"tomatoConsensus":"It's bound to hit some viewers as an empty exercise in stylish gore, and despite a gonzo starring performance from Eva Green, 300: Rise of an Empire is a step down from its predecessor.",
-//"tomatoUserMeter":"52",
-//"tomatoUserRating":"3.3","tomatoUserReviews":"139820",
-//"DVD":"24 Jun 2014","BoxOffice":"$106.6M",
-//"Production":"Warner Bros. Pictures",
-//"Website":"http://www.300themovie.com/","Response":"True"},
-
