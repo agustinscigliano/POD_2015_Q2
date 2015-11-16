@@ -100,7 +100,7 @@ public class QueryAnalyzer {
 		ccfg.getGroupConfig().setName(NAME).setPassword(pass);
 
 		// no hay descubrimiento automatico, 
-		// pero si no decimos nada intentar· usar LOCALHOST
+		// pero si no decimos nada intentarusar LOCALHOST
 		String addresses= "127.0.0.1";
 		//String addresses= System.getProperty("addresses");
 		if (addresses != null)
