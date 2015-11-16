@@ -36,9 +36,12 @@ import com.hazelcast.mapreduce.KeyValueSource;
 public class QueryAnalyzer {
 	private static final String MAP_NAME = "movies2015";
 	private static final String NAME="51277-51141";
+	private static final String PASS ="dev-pass";
+	private static final String ADDRESSES = "127.0.0.1";
 	private static final String SMALL = "res/imdb-40.json";
 	private static final String MEDIUM = "res/imdb-200.json";
 	private static final String LARGE = "res/imdb-20K.json";
+	private static final String DEFAULT_FILE = SMALL;
 	private Analyzer analyzer;
 	private Job<String, Movie> job;
 	public QueryAnalyzer(String[] args) {
@@ -48,61 +51,70 @@ public class QueryAnalyzer {
 
 		try{
 			String path = (String)analyzer.get("query");
-			path = path != null? path: SMALL;
+			path = path != null? path: DEFAULT_FILE;
 			this.job = prepareJob(path);
 			int qNumber = Integer.valueOf((String)analyzer.get("query"));
+			printTimestamp("INFO - Start map/reduce");
 			switch(qNumber){
 			case 1:
 				int N = Integer.valueOf((String)analyzer.get("N"));
+				System.out.println("Running job 1, N = "+N);
 				runJob1(N);
 				break;
 			case 2:
-				String tope = (String)analyzer.get("Tope");
-				//runJob2(tope);
+				String topeS = (String)analyzer.get("Tope");
+				Integer tope = Integer.valueOf(topeS);
+				System.out.println("Running job 2, Tope = "+ tope);
+				runJob2(tope);
 				break;
 			case 3:
-				System.out.println("execute 3");
+				System.out.println("Running job 3");
+				runJob3();
 				break;
 			case 4:
-				System.out.println("execute 4");
+				System.out.println("Running job 4");
+				runJob4();
 				break;
 			}
+			printTimestamp("INFO - End map/reduce");
 		}
 		catch(Exception e){
 			printHelp();
-			System.out.println("no params running job 1");
-			printTimestamp("INFO - Start map/reduce");
-			runJob2(2000);
-			printTimestamp("INFO - End map/reduce");
 		}
 	}
 	private void printHelp(){
-		System.out.println("wrong command, help:");		
+		System.out.println("Wrong command, help:");	
+		System.out.println("Invocation example");
+		System.out.println("java -jar path_tojar query=[1,2,3,4] *  **path=path_to_json address=list_of_nodes_ip");
+		System.out.println("*Aditional Params:");
+		System.out.println("for query 1: n=[1,..n]");
+		System.out.println("for query 2: Tope=1993");
+		
+		System.out.println("Path defaults to" + DEFAULT_FILE);
+		System.out.println("Name IS" + NAME);
+		System.out.println("Pass IS" + PASS);
+		System.out.println("Address defaults to" + ADDRESSES);
 	}
 	private Job<String, Movie> prepareJob(String path) throws InterruptedException, ExecutionException{
 
-		//String name= System.getProperty("name");
+		String name= System.getProperty("name");
+		name = name!=null?name:NAME;
 		String pass= System.getProperty("pass");
-		if (pass == null)
-		{
-			pass="dev-pass";
-		}
+		pass = pass!=null?pass:PASS;
 		System.out.println(String.format("Connecting with cluster dev-name [%s]", NAME));
 
 		ClientConfig ccfg= new ClientConfig();
-		ccfg.getGroupConfig().setName(NAME).setPassword(pass);
+		ccfg.getGroupConfig().setName(name).setPassword(pass);
 
 		// no hay descubrimiento automatico, 
 		// pero si no decimos nada intentarusar LOCALHOST
-		String addresses= "127.0.0.1";
-		//String addresses= System.getProperty("addresses");
-		if (addresses != null)
-		{	
-			String[] arrayAddresses= addresses.split("[,;]");
-			ClientNetworkConfig net= new ClientNetworkConfig();
-			net.addAddress(arrayAddresses);
-			ccfg.setNetworkConfig(net);
-		}
+		String addresses= System.getProperty("addresses");
+		addresses = addresses != null?addresses:ADDRESSES;
+		
+		String[] arrayAddresses= addresses.split("[,;]");
+		ClientNetworkConfig net= new ClientNetworkConfig();
+		net.addAddress(arrayAddresses);
+		ccfg.setNetworkConfig(net);
 		HazelcastInstance client = HazelcastClient.newHazelcastClient(ccfg);
 
 
@@ -118,8 +130,6 @@ public class QueryAnalyzer {
 		} 
 		catch (Exception e) 
 		{
-			System.out.println("error");
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 
@@ -155,6 +165,20 @@ public class QueryAnalyzer {
 							e.getKey(), e.getValue() ));
 				}
 	}
+	private void runJob3() throws InterruptedException, ExecutionException{
+		ICompletableFuture<Set<Entry<Set<String>, Set<String>>>> future = job 
+				.mapper(new MapperForCoupleActorsQuerie()) 
+				.reducer(new ReducerForCoupleActorsQuerie())
+				.submit(new CollatorForCoupleActorsQuerie()); 
+	
+		Set<Entry<Set<String>, Set<String>>> rta = future.get();
+		for (Entry<Set<String>, Set<String>> e : rta) 
+		{
+			System.out.println(String.format("Actores: %s => Peliculas %s",
+					e.getKey(), e.getValue() ));
+		}
+	
+	}
 	private void runJob4() throws InterruptedException, ExecutionException{
 		ICompletableFuture<Map<String, Set<String>>> future = job 
 				.mapper(new MapperForDirectorQuerie()) 
@@ -170,21 +194,6 @@ public class QueryAnalyzer {
 
 	}
 	
-	private void runJob3() throws InterruptedException, ExecutionException{
-		ICompletableFuture<Set<Entry<Set<String>, Set<String>>>> future = job 
-				.mapper(new MapperForCoupleActorsQuerie()) 
-				.reducer(new ReducerForCoupleActorsQuerie())
-				.submit(new CollatorForCoupleActorsQuerie()); 
-
-		Set<Entry<Set<String>, Set<String>>> rta = future.get();
-		for (Entry<Set<String>, Set<String>> e : rta) 
-		{
-			System.out.println(String.format("Actores: %s => Peliculas %s",
-					e.getKey(), e.getValue() ));
-		}
-
-	}
-
 	private void printTimestamp(String moment){
 		java.util.Date date= new java.util.Date();
 		Timestamp myTimestamp = new Timestamp(date.getTime());
