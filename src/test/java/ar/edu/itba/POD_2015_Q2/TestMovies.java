@@ -13,6 +13,9 @@ public class TestMovies extends TestCase {
 			Movie[] movie =  MovieLoader.loadMovies("res/imdb-20k.json");
 			System.out.println(movie.length);
 			System.out.println(movie[0]);
+			for (Movie movie2 : movie) {
+				System.out.println(movie2.getImdbVotes());
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

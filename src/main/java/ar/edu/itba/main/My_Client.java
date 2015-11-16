@@ -1,15 +1,7 @@
 package ar.edu.itba.main;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import ar.edu.itba.mapreduce.ActorsQuerie;
-import ar.edu.itba.mapreduce.CollatorForActorsQuerie;
-import ar.edu.itba.mapreduce.MapperForActorsQuerie;
-import ar.edu.itba.mapreduce.ReducerForActorsQuerie;
 import ar.edu.itba.model.Movie;
 import ar.edu.itba.model.MovieLoader;
 import ar.edu.itba.util.QueryAnalyzer;
@@ -18,7 +10,6 @@ import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
 import com.hazelcast.mapreduce.JobTracker;
@@ -36,10 +27,9 @@ public class My_Client
 
 	public static void main(String[] args) 
 	{
-		QueryAnalyzer qa = new QueryAnalyzer(args);
-		qa.run();
+		QueryAnalyzer qa = new QueryAnalyzer(args);		
 		try {
-			client();
+			qa.run(prepareJob());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Unexpected error while running client");
@@ -48,7 +38,7 @@ public class My_Client
 		System.exit(0);
 
 	}
-	private static void client() throws InterruptedException, ExecutionException{
+	private static Job<String, Movie> prepareJob() throws InterruptedException, ExecutionException{
 
 		//String name= System.getProperty("name");
 		String pass= System.getProperty("pass");
@@ -96,32 +86,7 @@ public class My_Client
 		// Ahora el Job desde los pares(key, Value) que precisa MapReduce
 		KeyValueSource<String, Movie> source = KeyValueSource.fromMap(myMap);
 		Job<String, Movie> job = tracker.newJob(source);
-
-		// Orquestacion de Jobs y lanzamiento
-		ICompletableFuture<List<ActorsQuerie>> future = job 
-				.mapper(new MapperForActorsQuerie()) 
-				.reducer(new ReducerForActorsQuerie())
-				.submit(new CollatorForActorsQuerie(5)); 
-
-		//		ICompletableFuture<Map<String, Set<String>>> future = job 
-		//				.mapper(new MapperForActorsQuerie()) 
-		//				.reducer(new ReducerForActorsQuerie())
-		//				.submit(); 
-
-		// Tomar resultado e Imprimirlo
-		//		Map<String, Set<String>> rta = future.get();
-		//		 for (Entry<String, Set<String>> e : rta.entrySet()) 
-		//		    {
-		//		    	System.out.println(String.format("Director %s => Actores %s",
-		//		    			e.getKey(), e.getValue() ));
-		//			}
-		//		 
-
-		List<ActorsQuerie> rta = future.get();
-		for (ActorsQuerie actor : rta) 
-		{
-			System.out.println("Actor: " + actor.getName() +" => Votos: "+ actor.getVotes());
-		}
+		return job;
 
 	}
 }
