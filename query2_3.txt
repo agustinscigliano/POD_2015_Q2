@@ -1,0 +1,34 @@
+Remember to add command line args in here!
+Connecting with cluster dev-name [51277-51141]
+INFO - addresses: 10.6.0.122
+INFO - addresses: 10.6.0.100
+INFO - addresses: 10.6.0.126
+com.hazelcast.client.proxy.ClientClusterProxy@1df2ecc
+11/16/2015 16:20:59.0315 INFO - Start reading
+11/16/2015 16:21:41.0955 INFO - End reading
+11/16/2015 16:21:41.0962 INFO - Start map/reduce
+PARSER - Running job 2, Tope = 1996
+Year 2002 => Movie: The Lord of the Rings: The Two Towers with MetaScore 88
+Year 2003 => Movie: The Lord of the Rings: The Return of the King with MetaScore 94
+Year 2000 => Movie: Almost Famous with MetaScore 90
+Year 2001 => Movie: Time Out with MetaScore 88
+Year 2006 => Movie: The Queen with MetaScore 91
+Year 2007 => Movie: No Country for Old Men with MetaScore 91
+Year 2004 => Movie: Eternal Sunshine of the Spotless Mind with MetaScore 89
+Year 2005 => Movie: Brokeback Mountain with MetaScore 87
+Year 2010 => Movie: The Social Network with MetaScore 95
+Year 2011 => Movie: Harry Potter and the Deathly Hallows: Part 2 with MetaScore 87
+Year 2008 => Movie: The Class with MetaScore 92
+Year 2009 => Movie: In the Loop with MetaScore 83
+Year 2014 => Movie: Leviathan with MetaScore 92
+Year 2015 => Movie: Inside Out with MetaScore 94
+Year 2012 => Movie: Zero Dark Thirty with MetaScore 95
+Year 2013 => Movie: Gravity with MetaScore 96
+Year 2017 => Movie: Programmed with MetaScore 0
+Year 2016 => Movie: Rogues in Robes with MetaScore 0
+Year 2019 => Movie: Hello Kitty with MetaScore 0
+Year 2018 => Movie: Traffic U.S.A. with MetaScore 0
+Year 1999 => Movie: The Insider with MetaScore 84
+Year 1998 => Movie: Out of Sight with MetaScore 85
+Year 1997 => Movie: Boogie Nights with MetaScore 85
+11/16/2015 16:21:43.0069 INFO - End map/reduce

@@ -1,0 +1,15 @@
+Remember to add command line args in here!
+Connecting with cluster dev-name [51277-51141]
+INFO - addresses: 10.6.0.100
+INFO - addresses: 10.6.0.126
+com.hazelcast.client.proxy.ClientClusterProxy@1df2ecc
+11/16/2015 16:26:01.0053 INFO - Start reading
+11/16/2015 16:26:43.0647 INFO - End reading
+11/16/2015 16:26:43.0657 INFO - Start map/reduce
+PARSER - Running job 1, N = 5
+Actor: Robert Downey Jr. with 3860454 votes.
+Actor: Sean Astin with 3214905 votes.
+Actor: Leonardo DiCaprio with 3149868 votes.
+Actor: Tom Cruise with 2937613 votes.
+Actor: Chris Evans with 2754898 votes.
+11/16/2015 16:26:51.0323 INFO - End map/reduce
